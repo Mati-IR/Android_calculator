@@ -39,50 +39,67 @@ class MainActivity : AppCompatActivity()
         outState.putString(KEY_RESULTS, resultsTV.text.toString())
     }
 
-    fun numberAction(view: View)
-    {
-        if(view is Button)
-        {
-            if(view.text == ".")
-            {
-                if(canAddDecimal)
+    fun numberAction(view: View) {
+        if (view is Button) {
+            if (view.text == ".") {
+                if (canAddDecimal)
                     workingsTV.append(view.text)
 
                 canAddDecimal = false
-            }
-            else
+            } else
                 workingsTV.append(view.text)
 
             canAddOperation = true
         }
     }
 
-    fun operationAction(view: View)
-    {
-        if(view is Button && canAddOperation)
-        {
-            workingsTV.append(view.text)
-            canAddOperation = false
-            canAddDecimal = true
+    fun operationAction(view: View) {
+        if (view is Button) {
+            // Check if the last character in workingsTV is an operator
+            val currentWorkings = workingsTV.text.toString()
+            if (currentWorkings.isNotEmpty() && currentWorkings.last().isOperator()) {
+                // Remove the last operator
+                workingsTV.text = currentWorkings.dropLast(1)
+            }
+
+            if (canAddOperation) {
+                val result = calculateResults()
+                resultsTV.text = result
+                workingsTV.text = "$result${view.text}"
+                canAddOperation = false
+                canAddDecimal = true
+            } else {
+                workingsTV.append(view.text)
+            }
         }
     }
 
-    fun allClearAction(view: View)
-    {
+    // Add an extension function to Char to check if it's an operator
+    fun Char.isOperator(): Boolean {
+        return this == '+' || this == '-' || this == 'x' || this == '/'
+    }
+
+    fun allClearAction(view: View) {
         workingsTV.text = ""
         resultsTV.text = ""
     }
 
-    fun backSpaceAction(view: View)
-    {
+    fun backSpaceAction(view: View) {
         val length = workingsTV.length()
-        if(length > 0)
+        if (length > 0)
             workingsTV.text = workingsTV.text.subSequence(0, length - 1)
     }
 
-    fun equalsAction(view: View)
-    {
-        resultsTV.text = calculateResults()
+    fun equalsAction(view: View) {
+        val result = calculateResults()
+        resultsTV.text = result
+        setCurrentResult(result)
+    }
+
+    private fun setCurrentResult(result: String) {
+        workingsTV.text = result
+        canAddOperation = true
+        canAddDecimal = true
     }
 
     private fun calculateResults(): String
