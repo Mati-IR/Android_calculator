@@ -6,14 +6,39 @@
 
     <LinearLayout
         android:id="@+id/outputLayout"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        app:layout_constraintHeight_percent="0.4"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonsLayout1">
+        app:layout_constraintBottom_toTopOf="@id/buttonsLayout1"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_weight="2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/workTV"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:textAlignment="textStart"
+            android:lines="2"
+            android:maxLines="2"
+            android:text=""
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/resultsTV"
+            android:textSize="40sp"
+            android:textColor="@color/orange"
+            android:textAlignment="textEnd"
+            android:lines="1"
+            android:maxLines="1"
+            android:text=""
+            app:layout_constraintTop_toBottomOf="@id/resultsTV"
+            />
     </LinearLayout>
-adad
+
     <LinearLayout
         style="@style/buttonRow"
         android:id="@+id/buttonsLayout1"
@@ -22,15 +47,17 @@ adad
         app:layout_constraintTop_toBottomOf="@id/outputLayout">
         <Button
             style="@style/buttonNumber"
-            android:text="C"
+            android:onClick="allClearAction"
+            android:text="AC"
             android:textColor="@color/red"/>
         <Button
             style="@style/buttonNumber"
+            android:onClick="backSpaceAction"
             android:text="⌫"
             android:textColor="@color/red"/>
         <Button
             style="@style/buttonOperator"
-            android:text="±"
+            android:text=""
             />
         <Button
             style="@style/buttonOperator"
@@ -47,13 +74,13 @@ adad
         <Button
             style="@style/buttonNumber"
             android:text="7"
-            android:textColor="@color/red"/>
+            />
         <Button
             style="@style/buttonNumber"
             android:text="8"
-            android:textColor="@color/red"/>
+            />
         <Button
-            style="@style/buttonOperator"
+            style="@style/buttonNumber"
             android:text="9"
             />
         <Button
@@ -71,13 +98,13 @@ adad
         <Button
             style="@style/buttonNumber"
             android:text="4"
-            android:textColor="@color/red"/>
+            />
         <Button
             style="@style/buttonNumber"
             android:text="5"
-            android:textColor="@color/red"/>
+            />
         <Button
-            style="@style/buttonOperator"
+            style="@style/buttonNumber"
             android:text="6"
             />
         <Button
@@ -95,13 +122,13 @@ adad
         <Button
             style="@style/buttonNumber"
             android:text="1"
-            android:textColor="@color/red"/>
+            />
         <Button
             style="@style/buttonNumber"
             android:text="2"
-            android:textColor="@color/red"/>
+            />
         <Button
-            style="@style/buttonOperator"
+            style="@style/buttonNumber"
             android:text="3"
             />
         <Button
@@ -119,11 +146,11 @@ adad
         <Button
             style="@style/buttonNumber"
             android:text="."
-            android:textColor="@color/red"/>
+            />
         <Button
             style="@style/buttonNumber"
             android:text="0"
-            android:textColor="@color/red"/>
+            />
         <Button
             style="@style/buttonNumber"
             android:layout_weight="2"

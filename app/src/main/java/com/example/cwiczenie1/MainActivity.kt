@@ -1,19 +1,23 @@
-package com.example.cwiczenie1
-
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cwiczenie1.R
+
 class MainActivity : AppCompatActivity()
 {
-    private val workingsTV: TextView by lazy { findViewById<TextView>(R.id.workTV) }
+    private val workTV: TextView by lazy { findViewById<TextView>(R.id.workTV) }
     private val resultsTV: TextView by lazy { findViewById<TextView>(R.id.resultsTV) }
+    private val outputLayout: LinearLayout by lazy { findViewById<LinearLayout>(R.id.outputLayout) }
     private var canAddOperation = false
     private var canAddDecimal = true
 
     private val KEY_WORKINGS = "workings"
     private val KEY_RESULTS = "results"
+    private val KEY_CAN_ADD_OPERATION = "canAddOperation"
+    private val KEY_CAN_ADD_DECIMAL = "canAddDecimal"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,27 +31,31 @@ class MainActivity : AppCompatActivity()
 
         // Restore state if available
         if (savedInstanceState != null) {
-            workingsTV.text = savedInstanceState.getString(KEY_WORKINGS, "")
+            workTV.text = savedInstanceState.getString(KEY_WORKINGS, "")
             resultsTV.text = savedInstanceState.getString(KEY_RESULTS, "")
+            canAddOperation = savedInstanceState.getBoolean(KEY_CAN_ADD_OPERATION, false)
+            canAddDecimal = savedInstanceState.getBoolean(KEY_CAN_ADD_DECIMAL, true)
         }
     }
 
     // Save the instance state to retain data after rotation
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(KEY_WORKINGS, workingsTV.text.toString())
+        outState.putString(KEY_WORKINGS, workTV.text.toString())
         outState.putString(KEY_RESULTS, resultsTV.text.toString())
+        outState.putBoolean(KEY_CAN_ADD_OPERATION, canAddOperation)
+        outState.putBoolean(KEY_CAN_ADD_DECIMAL, canAddDecimal)
     }
 
     fun numberAction(view: View) {
         if (view is Button) {
             if (view.text == ".") {
                 if (canAddDecimal)
-                    workingsTV.append(view.text)
+                    workTV.append(view.text)
 
                 canAddDecimal = false
             } else
-                workingsTV.append(view.text)
+                workTV.append(view.text)
 
             canAddOperation = true
         }
@@ -56,20 +64,20 @@ class MainActivity : AppCompatActivity()
     fun operationAction(view: View) {
         if (view is Button) {
             // Check if the last character in workingsTV is an operator
-            val currentWorkings = workingsTV.text.toString()
+            val currentWorkings = workTV.text.toString()
             if (currentWorkings.isNotEmpty() && currentWorkings.last().isOperator()) {
                 // Remove the last operator
-                workingsTV.text = currentWorkings.dropLast(1)
+                workTV.text = currentWorkings.dropLast(1)
             }
 
             if (canAddOperation) {
                 val result = calculateResults()
                 resultsTV.text = result
-                workingsTV.text = "$result${view.text}"
+                workTV.text = "$result${view.text}"
                 canAddOperation = false
                 canAddDecimal = true
             } else {
-                workingsTV.append(view.text)
+                workTV.append(view.text)
             }
         }
     }
@@ -80,14 +88,14 @@ class MainActivity : AppCompatActivity()
     }
 
     fun allClearAction(view: View) {
-        workingsTV.text = ""
+        workTV.text = ""
         resultsTV.text = ""
     }
 
     fun backSpaceAction(view: View) {
-        val length = workingsTV.length()
+        val length = workTV.length()
         if (length > 0)
-            workingsTV.text = workingsTV.text.subSequence(0, length - 1)
+            workTV.text = workTV.text.subSequence(0, length - 1)
     }
 
     fun equalsAction(view: View) {
@@ -97,13 +105,14 @@ class MainActivity : AppCompatActivity()
     }
 
     private fun setCurrentResult(result: String) {
-        workingsTV.text = result
+        workTV.text = result
         canAddOperation = true
         canAddDecimal = true
     }
 
     private fun calculateResults(): String
     {
+
         val digitsOperators = digitsOperators()
         if(digitsOperators.isEmpty()) return ""
 
@@ -187,7 +196,7 @@ class MainActivity : AppCompatActivity()
     {
         val list = mutableListOf<Any>()
         var currentDigit = ""
-        for(character in workingsTV.text)
+        for(character in workTV.text)
         {
             if(character.isDigit() || character == '.')
                 currentDigit += character

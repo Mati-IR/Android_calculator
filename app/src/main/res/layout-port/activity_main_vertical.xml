@@ -37,7 +37,7 @@
             android:maxLines="1"
             android:text=""
             android:textAlignment="textEnd"
-            android:textColor="@color/white"
+            android:textColor="@color/orange"
             android:textSize="40sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -50,7 +50,7 @@
         <Button
             style="@style/buttonNumber"
             android:onClick="allClearAction"
-            android:text="C"
+            android:text="AC"
             android:textColor="@color/red" />
 
         <Button
@@ -68,7 +68,7 @@
 
         <Button
             style="@style/buttonOperator"
-            android:text="÷" />
+            android:text="/" />
     </LinearLayout>
 
     <LinearLayout style="@style/buttonRow">
