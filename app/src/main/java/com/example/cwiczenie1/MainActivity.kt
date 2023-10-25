@@ -204,6 +204,12 @@ class MainActivity : AppCompatActivity()
             if (character.isDigit() || character == '.') {
                 currentDigit += character
             } else {
+                // If the character is one of +, x, or / and is the first character, then ignore
+                if (index == 0 && (character == '+' || character == 'x' || character == '/')) {
+                    continue
+                }
+
+                // Recognize a '-' as a negative sign when there's no number preceding it
                 if (character == '-' && (index == 0 || workTV.text[index - 1].isOperator())) {
                     currentDigit += character
                 } else {
@@ -220,6 +226,7 @@ class MainActivity : AppCompatActivity()
         }
         return list
     }
+
 
 
 }
