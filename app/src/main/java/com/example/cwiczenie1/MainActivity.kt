@@ -1,10 +1,11 @@
+package com.example.cwiczenie1
+
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cwiczenie1.R
 
 class MainActivity : AppCompatActivity()
 {
@@ -172,9 +173,12 @@ class MainActivity : AppCompatActivity()
                         newList.add(prevDigit * nextDigit)
                         restartIndex = i + 1
                     }
-                    '/' ->
-                    {
-                        newList.add(prevDigit / nextDigit)
+                    '/' -> {
+                        if (nextDigit != 0f) {
+                            newList.add(prevDigit / nextDigit)
+                        } else {
+                            newList.add(0f)
+                        }
                         restartIndex = i + 1
                     }
                     else ->
@@ -192,26 +196,30 @@ class MainActivity : AppCompatActivity()
         return newList
     }
 
-    private fun digitsOperators(): MutableList<Any>
-    {
+    private fun digitsOperators(): MutableList<Any> {
         val list = mutableListOf<Any>()
         var currentDigit = ""
-        for(character in workTV.text)
-        {
-            if(character.isDigit() || character == '.')
+        for (index in workTV.text.indices) {
+            val character = workTV.text[index]
+            if (character.isDigit() || character == '.') {
                 currentDigit += character
-            else
-            {
-                list.add(currentDigit.toFloat())
-                currentDigit = ""
-                list.add(character)
+            } else {
+                if (character == '-' && (index == 0 || workTV.text[index - 1].isOperator())) {
+                    currentDigit += character
+                } else {
+                    if (currentDigit != "") {
+                        list.add(currentDigit.toFloat())
+                        currentDigit = ""
+                    }
+                    list.add(character)
+                }
             }
         }
-
-        if(currentDigit != "")
+        if (currentDigit != "") {
             list.add(currentDigit.toFloat())
-
+        }
         return list
     }
+
 
 }

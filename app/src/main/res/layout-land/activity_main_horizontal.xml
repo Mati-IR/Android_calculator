@@ -59,10 +59,10 @@
             style="@style/buttonOperator"
             android:text=""
             />
+
         <Button
             style="@style/buttonOperator"
-            android:text="÷"
-            />
+            android:text="/" />
     </LinearLayout>
 
     <LinearLayout
